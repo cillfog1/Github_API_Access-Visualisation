@@ -14,7 +14,8 @@ g = Github("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")
 
 usr = g.get_user()
 
-dct = {	'user' : usr.login,
+dct = {	'_id' : usr.login,
+		'user' : usr.login,
 		'fullname' : usr.name,
 		'location' : usr.location,
 		'company' : usr.company}
@@ -45,14 +46,17 @@ try :
 except :
 	#Trace 3.2: Not connected to MongoDB
 	print("Trace 3.2: Connection to MongoDB failed")
-	#Quit if connection cannot be established
+	#Quit if connection cannot be
 	quit()
 
 #Create database 
 db = client.classDB
 
 #Insert cleaned database data
-db.githubUser.insert_many([dct])
-
-#Trace 5: Data inserted into database
-print("Trace 5: Data inserted into database")
+try :
+	db.githubUser.insert_many([dct])
+	#Trace 5: Data inserted into database
+	print("Trace 5: Data inserted into database")
+except :
+	#Trace 5.2: Username already exists in database
+	print("Trace 5.2: Username already exists in database")
