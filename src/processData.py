@@ -31,14 +31,14 @@ except :
 db = client.classDB
 
 #Extract the database data
-githubUser = db.githubUser.find()
+githubData = db.githubData.find()
 
 print("Database : ")
 #Pretty Print data
 
 with open('csv/data.csv', 'w') as file :
 	file.write('User,Name\n')
-	for user in githubUser :
-		pprint.pprint(user)
+	for data in githubData :
+		pprint.pprint(data)
 		print()
-		file.write(user['user'] + ',' + str(user['fullname']) + '\n')
+		#file.write(user['user'] + ',' + str(user['fullname']) + '\n')

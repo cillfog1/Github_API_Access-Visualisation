@@ -26,7 +26,7 @@ except :
 db = client.classDB
 
 #Clear Database
-db.githubUser.delete_many({})
+db.githubData.delete_many({})
 
 #Trace 2: githubUser database cleared
-print("Trace 2: githubUser database cleared")
+print("Trace 2: githubData database cleared")

@@ -80,6 +80,6 @@ for commit in commits :
 
 
 	#----------------------------- Insert into database -----------------------------
-	db.githubUser.insert_many([dct])
+	db.githubData.insert_many([dct])
 	#Trace 4: Data inserted into database
 	print("Trace 4: Data inserted into database\n")

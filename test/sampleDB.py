@@ -41,7 +41,7 @@ db = client.classDB
 
 #Insert cleaned database data
 try :
-	db.githubUser.insert_many([dct])
+	db.githubData.insert_many([dct])
 	#Trace 3: Data inserted into database
 	print("Trace 3: Data inserted into database")
 except :
