@@ -35,6 +35,10 @@ githubUser = db.githubUser.find()
 
 print("Database : ")
 #Pretty Print data
-for user in githubUser :
-	pprint.pprint(user)
-	print()
+
+with open('csv/data.csv', 'w') as file :
+	file.write('User,Name\n')
+	for user in githubUser :
+		pprint.pprint(user)
+		print()
+		file.write(user['user'] + ',' + str(user['fullname']) + '\n')
