@@ -2,6 +2,8 @@
 #MongoDB access, install using 'pip install pymongo'
 import pymongo
 
+print("\n----------------------------- Running clearDB.py -----------------------------")
+
 
 #----------------------------- Connect to MongoDB -----------------------------
 #Establish connection

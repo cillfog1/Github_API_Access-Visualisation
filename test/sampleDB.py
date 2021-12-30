@@ -5,6 +5,8 @@ import json
 #MongoDB access, install using 'pip install pymongo'
 import pymongo
 
+print("\n----------------------------- Running sampleDB.py -----------------------------")
+
 
 #----------------------------- Initialise Data -----------------------------
 
