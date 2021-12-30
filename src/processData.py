@@ -37,8 +37,13 @@ print("Database : ")
 #Pretty Print data
 
 with open('csv/data.csv', 'w') as file :
-	file.write('User,Name\n')
+	file.write('RepoName, Date,User,Additions,Deletions,Total\n')
 	for data in githubData :
 		pprint.pprint(data)
 		print()
-		#file.write(user['user'] + ',' + str(user['fullname']) + '\n')
+		file.write(	str(data['repoName']) + ',' +
+					str(data['date']) + ',' +
+					str(data['user']) + ',' +
+					str(data['additions']) + ',' +
+					str(data['deletions']) + ',' +
+					str(data['total']) + '\n')

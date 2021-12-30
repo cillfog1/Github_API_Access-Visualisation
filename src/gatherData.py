@@ -11,6 +11,9 @@ import pymongo
 #Constants used across multiple files
 import constants
 
+#Date formatting
+from datetime import datetime
+
 #To anonymise names
 from faker import Faker
 from collections import defaultdict
@@ -45,26 +48,24 @@ if (constants.GITHUB_TOKEN == 0) :
 	quit()
 g = Github(constants.GITHUB_TOKEN)
 
-repo = g.get_repo("EndaHealion/AlgoDats-Bus-Management")
-commits = repo.get_commits()
+repoName = "EndaHealion/AlgoDats-Bus-Management"
 
-commitNumber = 1
+repo = g.get_repo(repoName)
+commits = repo.get_commits()
 
 for commit in commits :
 	#Anonymise names?
 	if (constants.ANONYMISE_NAMES == 1) :
 		username = names[commit.author.login].replace(" ", ""), #Anonymising username
-		fullName = names[commit.author.name], #Anonymising name
 	else :
 		username = commit.author.login
-		fullName = commit.author.name
 
-	dct = {	'commitNumber' : commitNumber,
+	dct = {	'repoName' : repoName,
+			'date' : commit.commit.author.date.strftime("%Y/%m/%d"),
 			'user' : username,
-			'fullName' : fullName,
 			'additions' : commit.stats.additions,
-			'deletions' : commit.stats.deletions}
-	commitNumber += 1
+			'deletions' : commit.stats.deletions,
+			'total' : commit.stats.total}
 
 	#Trace 2: Shows current data in dictionary, before being cleaned
 	print("Trace 2: dictionary : " + json.dumps(dct))
