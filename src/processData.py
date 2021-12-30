@@ -5,13 +5,15 @@ import pymongo
 #Pretty print database data
 import pprint
 
+#Constants used across multiple files
+import constants
+
 print("\n----------------------------- Running processData.py -----------------------------")
 
 
 #----------------------------- Connect to MongoDB -----------------------------
 #Establish connection
-conn = "mongodb://localhost:27017"
-client = pymongo.MongoClient(conn)
+client = pymongo.MongoClient(constants.CONN)
 
 #Check Connection
 try :

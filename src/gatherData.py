@@ -8,6 +8,9 @@ import json
 #MongoDB access, install using 'pip install pymongo'
 import pymongo
 
+#Constants used across multiple files
+import constants
+
 #To anonymise names
 from faker import Faker
 from collections import defaultdict
@@ -18,7 +21,10 @@ print("\n----------------------------- Running gatherData.py -------------------
 
 
 #----------------------------- Collect Data -----------------------------
-g = Github('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')
+if (constants.GITHUB_TOKEN == 0) :
+	print("\nIMPORTANT: Please insert your API token in constants.py")
+	quit()
+g = Github(constants.GITHUB_TOKEN)
 
 usr = g.get_user()
 
@@ -44,8 +50,7 @@ print("Trace 2: cleaned dictionary : " + json.dumps(dct))
 
 #----------------------------- Connect to MongoDB -----------------------------
 #Establish connection
-conn = "mongodb://localhost:27017"
-client = pymongo.MongoClient(conn)
+client = pymongo.MongoClient(constants.CONN)
 
 #Check Connection
 try :
