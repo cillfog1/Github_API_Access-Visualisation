@@ -20,34 +20,6 @@ names = defaultdict(faker.name)
 print("\n----------------------------- Running gatherData.py -----------------------------")
 
 
-#----------------------------- Collect Data -----------------------------
-if (constants.GITHUB_TOKEN == 0) :
-	print("\nIMPORTANT: Please insert your API token in src/constants.py")
-	quit()
-g = Github(constants.GITHUB_TOKEN)
-
-usr = g.get_user()
-
-dct = {	'_id' : names[usr.login].replace(" ", ""), #Anonymising username used as uniqueID
-		'user' : names[usr.login].replace(" ", ""), #Anonymising username
-		'fullname' : names[usr.name], #Anonymising name
-		'location' : usr.location,
-		'company' : usr.company,
-		'public_repos' : usr.public_repos}
-
-#Trace 1: Shows current data in dictionary, before being cleaned
-print("Trace 1: dictionary : " + json.dumps(dct))
-
-
-#----------------------------- Clean Data -----------------------------
-for k, v in dict(dct).items() :
-	if v is None :
-		del dct[k]
-
-#Trace 2: Shows current data in dictionary, after being cleaned
-print("Trace 2: cleaned dictionary : " + json.dumps(dct))
-
-
 #----------------------------- Connect to MongoDB -----------------------------
 #Establish connection
 client = pymongo.MongoClient(constants.CONN)
@@ -55,23 +27,59 @@ client = pymongo.MongoClient(constants.CONN)
 #Check Connection
 try :
 	client.admin.command('ping')
-	#Trace 3: Connected to MongoDB
-	print("Trace 3: Connection to MongoDB established")
+	#Trace 1: Connected to MongoDB
+	print("Trace 1: Connection to MongoDB established")
 except :
-	#Trace 3.2: Not connected to MongoDB
-	print("Trace 3.2: Connection to MongoDB failed")
+	#Trace 1.2: Not connected to MongoDB
+	print("Trace 1.2: Connection to MongoDB failed")
 	#Quit if connection cannot be
 	quit()
 
 #Create database 
 db = client.classDB
 
-#Insert cleaned database data
-try :
-	#Note: Duplicate checking using _ID does not work with anonymised usernames, but would be used in a non-anonymised environment
+
+#----------------------------- Collect Data -----------------------------
+if (constants.GITHUB_TOKEN == 0) :
+	print("\nIMPORTANT: Please insert your API token in src/constants.py")
+	quit()
+g = Github(constants.GITHUB_TOKEN)
+
+repo = g.get_repo("EndaHealion/AlgoDats-Bus-Management")
+commits = repo.get_commits()
+
+commitNumber = 1
+
+for commit in commits :
+	#Anonymise names?
+	if (constants.ANONYMISE_NAMES == 1) :
+		username = names[commit.author.login].replace(" ", ""), #Anonymising username
+		fullName = names[commit.author.name], #Anonymising name
+	else :
+		username = commit.author.login
+		fullName = commit.author.name
+
+	dct = {	'commitNumber' : commitNumber,
+			'user' : username,
+			'fullName' : fullName,
+			'additions' : commit.stats.additions,
+			'deletions' : commit.stats.deletions}
+	commitNumber += 1
+
+	#Trace 2: Shows current data in dictionary, before being cleaned
+	print("Trace 2: dictionary : " + json.dumps(dct))
+
+
+	#----------------------------- Clean Data -----------------------------
+	for k, v in dict(dct).items() :
+		if v is None :
+			del dct[k]
+
+	#Trace 3: Shows current data in dictionary, after being cleaned
+	print("Trace 3: cleaned dictionary : " + json.dumps(dct))
+
+
+	#----------------------------- Insert into database -----------------------------
 	db.githubUser.insert_many([dct])
 	#Trace 4: Data inserted into database
-	print("Trace 4: Data inserted into database")
-except :
-	#Trace 4.2: Username already exists in database
-	print("Trace 4.2: Username already exists in database")
+	print("Trace 4: Data inserted into database\n")
