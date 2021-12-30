@@ -8,6 +8,8 @@ import json
 #MongoDB access, install using 'pip install pymongo'
 import pymongo
 
+print("\n----------------------------- Running gatherData.py -----------------------------")
+
 
 #----------------------------- Collect Data -----------------------------
 g = Github("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")
@@ -55,8 +57,8 @@ db = client.classDB
 #Insert cleaned database data
 try :
 	db.githubUser.insert_many([dct])
-	#Trace 5: Data inserted into database
-	print("Trace 5: Data inserted into database")
+	#Trace 4: Data inserted into database
+	print("Trace 4: Data inserted into database")
 except :
-	#Trace 5.2: Username already exists in database
-	print("Trace 5.2: Username already exists in database")
+	#Trace 4.2: Username already exists in database
+	print("Trace 4.2: Username already exists in database")

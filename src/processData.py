@@ -5,6 +5,8 @@ import pymongo
 #Pretty print database data
 import pprint
 
+print("\n----------------------------- Running gatherData.py -----------------------------")
+
 
 #----------------------------- Connect to MongoDB -----------------------------
 #Establish connection
