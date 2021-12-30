@@ -1,16 +1,58 @@
+#----------------------------- Imports -----------------------------
 #import PyGithub library, install using 'pip install PyGithub' 
 from github import Github
 
+#Converts dictionary to string
+import json
+
+#MongoDB access, install using 'pip install pymongo'
+import pymongo
+
+
+#----------------------------- Collect Data -----------------------------
 g = Github("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")
 
 usr = g.get_user()
-print("user: " + usr.login)
 
-if usr.name is not None:
-	print("fullname: " + usr.name)
+dct = {	'user' : usr.login,
+		'fullname' : usr.name,
+		'location' : usr.location,
+		'company' : usr.company}
 
-if usr.location is not None:
-	print("location: " + usr.location)
+#Trace 1: Shows current data in dictionary, before being cleaned
+print("Trace 1: dictionary : " + json.dumps(dct))
 
-if usr.company is not None:
- print("company: " + usr.company)
+
+#----------------------------- Clean Data -----------------------------
+for k, v in dict(dct).items() :
+	if v is None :
+		del dct[k]
+
+#Trace 2: Shows current data in dictionary, after being cleaned
+print("Trace 2: cleaned dictionary : " + json.dumps(dct))
+
+
+#----------------------------- Connect to MongoDB -----------------------------
+#Establish connection
+conn = "mongodb://localhost:27017"
+client = pymongo.MongoClient(conn)
+
+#Check Connection
+try :
+	client.admin.command('ping')
+	#Trace 3: Connected to MongoDB
+	print("Trace 3: Connection to MongoDB established")
+except :
+	#Trace 3.2: Not connected to MongoDB
+	print("Trace 3.2: Connection to MongoDB failed")
+	#Quit if connection cannot be established
+	quit()
+
+#Create database 
+db = client.classDB
+
+#Insert cleaned database data
+db.githubUser.insert_many([dct])
+
+#Trace 5: Data inserted into database
+print("Trace 5: Data inserted into database")
