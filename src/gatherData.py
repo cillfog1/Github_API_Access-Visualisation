@@ -8,19 +8,26 @@ import json
 #MongoDB access, install using 'pip install pymongo'
 import pymongo
 
+#To anonymise names
+from faker import Faker
+from collections import defaultdict
+faker = Faker()
+names = defaultdict(faker.name)
+
 print("\n----------------------------- Running gatherData.py -----------------------------")
 
 
 #----------------------------- Collect Data -----------------------------
-g = Github("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")
+g = Github('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')
 
 usr = g.get_user()
 
-dct = {	'_id' : usr.login,
-		'user' : usr.login,
-		'fullname' : usr.name,
+dct = {	'_id' : names[usr.login].replace(" ", ""), #Anonymising username used as uniqueID
+		'user' : names[usr.login].replace(" ", ""), #Anonymising username
+		'fullname' : names[usr.name], #Anonymising name
 		'location' : usr.location,
-		'company' : usr.company}
+		'company' : usr.company,
+		'public_repos' : usr.public_repos}
 
 #Trace 1: Shows current data in dictionary, before being cleaned
 print("Trace 1: dictionary : " + json.dumps(dct))
