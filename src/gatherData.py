@@ -22,7 +22,7 @@ print("\n----------------------------- Running gatherData.py -------------------
 
 #----------------------------- Collect Data -----------------------------
 if (constants.GITHUB_TOKEN == 0) :
-	print("\nIMPORTANT: Please insert your API token in constants.py")
+	print("\nIMPORTANT: Please insert your API token in src/constants.py")
 	quit()
 g = Github(constants.GITHUB_TOKEN)
 
@@ -68,6 +68,7 @@ db = client.classDB
 
 #Insert cleaned database data
 try :
+	#Note: Duplicate checking using _ID does not work with anonymised usernames, but would be used in a non-anonymised environment
 	db.githubUser.insert_many([dct])
 	#Trace 4: Data inserted into database
 	print("Trace 4: Data inserted into database")
