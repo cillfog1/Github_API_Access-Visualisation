@@ -5,7 +5,7 @@ import pymongo
 #Pretty print database data
 import pprint
 
-print("\n----------------------------- Running gatherData.py -----------------------------")
+print("\n----------------------------- Running processData.py -----------------------------")
 
 
 #----------------------------- Connect to MongoDB -----------------------------
@@ -31,6 +31,7 @@ db = client.classDB
 #Extract the database data
 githubUser = db.githubUser.find()
 
+print("Database : ")
 #Pretty Print data
 for user in githubUser :
 	pprint.pprint(user)
