@@ -1,0 +1,2 @@
+./gatherData.sh
+./processData.sh
