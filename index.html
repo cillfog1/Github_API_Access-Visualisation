@@ -9,12 +9,24 @@
   <button onclick="analyseRepo()">Analyse</button>
 </div>
 
-<script>
+<div>
+  <input type="text" id="username">
+  <button onclick="extractRepo()">Extract</button>
+</div>
 
+<script>
+var repoName = ""
 //Analyse repo on server side and add relevant data to database if not already present
 function analyseRepo() {
-  var repoName = document.getElementById('repoName').value;
-  fetch(`http://localhost:5000/repoName?repoName=${repoName}`,
+  repoName = document.getElementById('repoName').value;
+  fetch(`http://localhost:5000/analyse?repoName=${repoName}`,
+    {method: 'POST',
+    mode: 'no-cors'});
+}
+
+function extractRepo() {
+  var username = document.getElementById('username').value;
+  fetch(`http://localhost:5000/extract?repoName=${repoName}&username=${username}`,
     {method: 'POST',
     mode: 'no-cors'});
 }
