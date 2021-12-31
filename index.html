@@ -4,6 +4,22 @@
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
 
+<div>
+  <input type="text" id="repoName">
+  <button onclick="analyseRepo()">Analyse</button>
+</div>
+
+<script>
+
+//Analyse repo on server side and add relevant data to database if not already present
+function analyseRepo() {
+  var repoName = document.getElementById('repoName').value;
+  fetch(`http://localhost:5000/repoName?repoName=${repoName}`,
+    {method: 'POST',
+    mode: 'no-cors'});
+}
+</script>
+
 <h1>Comparison Data</h1>
 <!-- Create a div where the graph will take place -->
 <div id="graph1"></div>
