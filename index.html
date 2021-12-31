@@ -15,16 +15,17 @@
 </div>
 
 <script>
-var repoName = ""
+
 //Analyse repo on server side and add relevant data to database if not already present
 function analyseRepo() {
-  repoName = document.getElementById('repoName').value;
+  var repoName = document.getElementById('repoName').value;
   fetch(`http://localhost:5000/analyse?repoName=${repoName}`,
     {method: 'POST',
     mode: 'no-cors'});
 }
 
 function extractRepo() {
+  var repoName = document.getElementById('repoName').value;
   var username = document.getElementById('username').value;
   fetch(`http://localhost:5000/extract?repoName=${repoName}&username=${username}`,
     {method: 'POST',
@@ -63,6 +64,8 @@ var svg = d3.select("#graph1")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+moreThanOneContributer = false
+
 //Read the data
 d3.csv("csv/contributerData.csv", function(d){
     return { Date : d3.timeParse("%Y/%m/%d")(d.Date), Additions : d.Additions, Deletions : d.Deletions, Total : d.Total}
@@ -74,7 +77,7 @@ d3.csv("csv/contributerData.csv", function(d){
 
       // List of groups (here I have one group per column)
       var allGroup = []
-      if (true) {
+      if (moreThanOneContributer) {
         allGroup = ["Additions", "Deletions", "Total", "AverageAdditions", "AverageDeletions", "AverageTotal"]
       }
       else {
@@ -108,14 +111,22 @@ d3.csv("csv/contributerData.csv", function(d){
         .domain(allGroup)
         .range(d3.schemeSet2);
 
-      // Calculate date range
-      var dateMinContributer = d3.min(data, function(d) { return d.Date; });
-      var dateMinTeam = d3.min(data2, function(d) { return d.Date; });
-      var dateMin = (dateMinContributer <= dateMinTeam) ? dateMinContributer : dateMinTeam;
+      var dateMin
+      var dateMax
+      if (moreThanOneContributer) {
+        // Calculate date range
+        var dateMinContributer = d3.min(data, function(d) { return d.Date; });
+        var dateMinTeam = d3.min(data2, function(d) { return d.Date; });
+        dateMin = (dateMinContributer <= dateMinTeam) ? dateMinContributer : dateMinTeam;
 
-      var dateMaxContributer = d3.max(data, function(d) { return d.Date; });
-      var dateMaxTeam = d3.max(data2, function(d) { return d.Date; });
-      var dateMax = (dateMaxContributer >= dateMaxTeam) ? dateMaxContributer : dateMaxTeam;
+        var dateMaxContributer = d3.max(data, function(d) { return d.Date; });
+        var dateMaxTeam = d3.max(data2, function(d) { return d.Date; });
+        dateMax = (dateMaxContributer >= dateMaxTeam) ? dateMaxContributer : dateMaxTeam;
+      }
+      else {
+        dateMin = d3.min(data, function(d) { return d.Date; });
+        dateMax = d3.max(data, function(d) { return d.Date; });
+      }
 
       // Add X axis --> it is a date format
       var x = d3.scaleTime()
