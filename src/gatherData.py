@@ -87,19 +87,31 @@ def collectData(repoName) :
 					'contributers' : contributers}
 
 		#Trace 2: Shows current data in repo dictionary
-		#print("Trace 2: repo dictionary : ")
-		#pprint.pprint(repoDct)
-		#print()
+		print("Trace 2: repo dictionary : ")
+		pprint.pprint(repoDct)
+		print()
 
 		#----------------------------- Insert into Repo database -----------------------------
 		reposDB.insert_many([repoDct])
 		#Trace 3: Data inserted into database
-		#print("Trace 3: Data inserted into database\n")
+		print("Trace 3: Data inserted into database\n")
 
 
-		#----------------------------- Commits -----------------------------
+		#----------------------------- Merge all commits by date -----------------------------
+		#This means the graph is less clutters with multiple commits made on the same day,
+		#instead collating/merging all bulk modifications made by a single person, on a particular day into one point
+
 		#Reversed to start at oldest commit and work to most recent commit
 		commits = repo.get_commits().reversed
+
+		#Default Values
+		previousCommitDct = {	'repoName' : "",
+								'username' : "",
+								'date' : "",
+								'additions' : 0,
+								'deletions' : 0,
+								'total' : 0}
+		commitsByDate = []
 
 		for commit in commits :
 			#Anonymise names?
@@ -109,30 +121,49 @@ def collectData(repoName) :
 				username = commit.author.login
 
 			#Date of commit
-			date = commit.commit.author.date.strftime("%Y/%m/%d %H:%M:%S")
+			date = commit.commit.author.date.strftime("%Y/%m/%d")
 
-			commitDct = {	'repoName' : repoName,
-							'username' : username,
-							'date' : date,
-							'additions' : commit.stats.additions,
-							'deletions' : commit.stats.deletions,
-							'total' : commit.stats.total}
-			
-			#Trace 4: Shows current data in dictionary, before being cleaned
-			#print("Trace 4: commit dictionary : ")
-			#pprint.pprint(commitDct)
-			#print()
+			#If previous commit was made on the same day, by the same person merge them
+			if (username == previousCommitDct['username'] and date == previousCommitDct['date']) :
+				commitDct = {	'repoName' : repoName,
+								'username' : username,
+								'date' : date,
+								'additions' : previousCommitDct['additions'] + commit.stats.additions,
+								'deletions' : previousCommitDct['deletions'] + commit.stats.deletions,
+								'total' : previousCommitDct['total'] + commit.stats.total}
 
+			else :
+				#If not first run
+				if (previousCommitDct['date'] != "") :
+					commitsByDate.append(previousCommitDct)
+					#Trace 4: Shows current data in dictionary, before being cleaned
+					print("Trace 4: added to commitsByDate list : ")
+					pprint.pprint(previousCommitDct)
+					print()
 
+				commitDct = {	'repoName' : repoName,
+								'username' : username,
+								'date' : date,
+								'additions' : commit.stats.additions,
+								'deletions' : commit.stats.deletions,
+								'total' : commit.stats.total}
+			#Update previous
+			previousCommitDct = commitDct
+
+		#Add last
+		commitsByDate.append(previousCommitDct)
+
+		#For all commits after merging
+		for commitDct in commitsByDate :
 			#----------------------------- Clean Data -----------------------------
 			for k, v in dict(commitDct).items() :
 				if v is None :
 					del commitDct[k]
 
 			#Trace 5: Shows current data in dictionary, after being cleaned
-			#print("Trace 5: cleaned commit dictionary : ")
-			#pprint.pprint(commitDct)
-			#print()
+			print("Trace 5: cleaned commit dictionary : ")
+			pprint.pprint(commitDct)
+			print()
 
 
 			#----------------------------- Insert into database -----------------------------
