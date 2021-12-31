@@ -10,7 +10,6 @@ import constants
 
 print("\n----------------------------- Running processData.py -----------------------------")
 
-
 #----------------------------- Connect to MongoDB -----------------------------
 #Establish connection
 client = pymongo.MongoClient(constants.CONN)
@@ -30,8 +29,15 @@ except :
 #Access database 
 db = client.classDB
 
+#Repo database
+reposDB = db.repos
+
+#Commit database
+commitsDB = db.commits
+
 #Extract the database data
-githubData = db.githubData.find()
+#githubData = commitsDB.find({"repoName": repoName, "username": username})
+githubData = commitsDB.find()
 
 print("Database : ")
 #Pretty Print data

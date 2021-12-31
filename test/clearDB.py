@@ -25,8 +25,20 @@ except :
 #Access database 
 db = client.classDB
 
-#Clear Database
-db.githubData.delete_many({})
+#Repo database
+reposDB = db.repos
+
+#Commit database
+commitsDB = db.commits
+
+#Clear repos database
+reposDB.delete_many({})
 
 #Trace 2: githubUser database cleared
-print("Trace 2: githubData database cleared")
+print("Trace 2: reposDB database cleared")
+
+#Clear commits database 
+commitsDB.delete_many({})
+
+#Trace 2: githubUser database cleared
+print("Trace 3: commitsDB database cleared")
