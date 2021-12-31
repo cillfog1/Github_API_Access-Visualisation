@@ -1,11 +1,22 @@
 from flask import Flask, request
 
+import gatherData
+import processData
+
 app = Flask(__name__)
 
-@app.route('/repoName', methods=['GET','POST'])
-def getRepoData() :
-	repo = request.args.get('repoName')
-	return repo
+@app.route('/analyse', methods=['GET','POST'])
+def anaylseData() :
+	repoName = request.args.get('repoName')
+	gatherData.collectData(repoName)
+	return "success"
+
+@app.route('/extract', methods=['GET','POST'])
+def extractData() :
+	repoName = request.args.get('repoName')
+	username = request.args.get('username')
+	processData.extractData(repoName, username)
+	return "success"
 
 if __name__ == '__main__' :
     app.run(host='0.0.0.0', port=5000)

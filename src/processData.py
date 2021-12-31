@@ -35,19 +35,19 @@ reposDB = db.repos
 #Commit database
 commitsDB = db.commits
 
-#Extract the database data
-#githubData = commitsDB.find({"repoName": repoName, "username": username})
-githubData = commitsDB.find()
+def extractData(repoName, username) :
+	#Extract the database data
+	githubData = commitsDB.find({"repoName": repoName, "username": username})
 
-print("Database : ")
-#Pretty Print data
+	print("Database : ")
+	#Pretty Print data
 
-with open('csv/data.csv', 'w') as file :
-	file.write('Date,Additions,Deletions,Total\n')
-	for data in githubData :
-		pprint.pprint(data)
-		print()
-		file.write(	str(data['date']) + ',' +
-					str(data['additions']) + ',' +
-					str(data['deletions']) + ',' +
-					str(data['total']) + '\n')
+	with open('csv/data.csv', 'w') as file :
+		file.write('Date,Additions,Deletions,Total\n')
+		for data in githubData :
+			pprint.pprint(data)
+			print()
+			file.write(	str(data['date']) + ',' +
+						str(data['additions']) + ',' +
+						str(data['deletions']) + ',' +
+						str(data['total']) + '\n')
