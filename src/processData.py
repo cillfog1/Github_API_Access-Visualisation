@@ -100,4 +100,5 @@ def extractData(repoName, username) :
 	else :
 		with open('csv/teamData.csv', 'w') as file :
 			file.write('Date,Additions,Deletions,Total\n')
-			file.write(	0 + '\n')
+			#Empty file
+			file.write(	"0000/00/00,0,0,0\n")
