@@ -1,3 +1,4 @@
+<!-- Adapted from https://www.d3-graph-gallery.com/ -->
 <!DOCTYPE html>
 
 <h1>Testing</h1>
@@ -61,8 +62,9 @@ d3.csv("csv/data.csv", function(d){
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
+    // Calculate max height
     var max = d3.max(data, function(d) { return +d.Total; });
-    console.log(max)
+
     // Add Y axis
     var y = d3.scaleLinear()
       .domain([0, max])
