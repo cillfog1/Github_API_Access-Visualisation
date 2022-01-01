@@ -11,7 +11,7 @@
         <button onclick="analyseRepo()">Analyse</button>
     </div>
 
-        <div>
+    <div>
         <select id="username" onchange="extractRepo()" style="width : 80%">
             <option>Choose a contributer</option>
         </select>
@@ -160,10 +160,10 @@ function drawGraph() {
                 .domain(allGroup)
                 .range(d3.schemeSet2);
 
+            // Calculate date range
             var dateMin
             var dateMax
             if (moreThanOneContributer) {
-                // Calculate date range
                 var dateMinContributer = d3.min(data, function(d) { return d.Date; });
                 var dateMinTeam = d3.min(data2, function(d) { return d.Date; });
                 dateMin = (dateMinContributer <= dateMinTeam) ? dateMinContributer : dateMinTeam;
@@ -186,13 +186,19 @@ function drawGraph() {
                 .call(d3.axisBottom(x));
 
             // Calculate max height
-            var maxContributer = d3.max(data, function(d) { return +d.Total; });
-            var maxTeam = d3.max(data2, function(d) { return +d.AverageTotal; });
-            var max = (maxContributer >= maxTeam) ? maxContributer : maxTeam;
+            var maxHeight
+            if (moreThanOneContributer) {
+                var maxHeightContributer = d3.max(data, function(d) { return +d.Total; });
+                var maxHeightTeam = d3.max(data2, function(d) { return +d.AverageTotal; });
+                maxHeight = (maxHeightContributer >= maxHeightTeam) ? maxHeightontributer : maxHeightTeam;
+            }
+            else {
+                maxHeight = d3.max(data, function(d) { return +d.Total; });
+            }
 
             // Add Y axis
             var y = d3.scaleLinear()
-                .domain([0, max])
+                .domain([0, maxHeight])
                 .range([ height, 0 ]);
             svg.append("g")
                 .call(d3.axisLeft(y));
