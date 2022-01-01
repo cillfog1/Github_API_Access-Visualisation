@@ -19,6 +19,8 @@
 </body>
 
 <script>
+var currentRepo
+var moreThanOneContributer
 
 //Analyse repo on server side and add relevant data to database if not already present
 function analyseRepo() {
@@ -41,9 +43,8 @@ function analyseRepo() {
 }
 
 function extractRepo() {
-  var repoName = document.getElementById('repoName').value;
   var username = document.getElementById('username').value;
-  fetch(`http://localhost:5000/extract?repoName=${repoName}&username=${username}`,
+  fetch(`http://localhost:5000/extract?repoName=${currentRepo}&username=${username}`,
     {method: 'POST'})
     .then(function (response) {
         return response.text();
@@ -56,7 +57,12 @@ function updateContributersList(dct) {
     var contributersList = document.getElementById('username');
     contributersList.options.length = 0;
     console.log(dct['contributers']);
-
+    if (dct['contributers'].length > 1) {
+        moreThanOneContributer = true;
+    }
+    else {
+        moreThanOneContributer = false;
+    }
     for (i in dct['contributers']) {
         var contributer = dct['contributers'][i];
         var opt = document.createElement('option');
@@ -67,6 +73,7 @@ function updateContributersList(dct) {
 }
 
 function updateSelectedRepo(repoName) {
+    currentRepo = repoName;
     document.getElementById('selectedRepo').innerHTML = repoName;
 }
 
@@ -91,8 +98,6 @@ function updateErrorMsg(errorMsg) {
 
 
 <script>
-
-moreThanOneContributer = true
 
 //Read the data
 function drawGraph() {
