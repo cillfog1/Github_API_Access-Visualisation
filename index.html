@@ -10,13 +10,9 @@
   </div>
 
   <div>
-    <input type="text" id="username">
-    <button onclick="extractRepo()">Extract</button>
-  </div>
-
-
-  <div>
-    <button onclick="drawGraph()">Draw</button>
+    <select id="username" onchange="extractRepo()">
+        <option>Placeholder</option>
+    </select>
   </div>
 </body>
 
@@ -28,9 +24,10 @@ function analyseRepo() {
   fetch(`http://localhost:5000/analyse?repoName=${repoName}`,
     {method: 'POST'})
     .then(function (response) {
-        return response.text();
-    }).then(function (text) {
-        console.log(text); 
+        return response.json();
+    }).then(function (dct) {
+        updateContributersList(dct);
+        extractRepo(); 
     });
 }
 
@@ -42,8 +39,23 @@ function extractRepo() {
     .then(function (response) {
         return response.text();
     }).then(function (text) {
-        console.log(text); 
+        console.log(text);
+        drawGraph(); 
     });
+}
+
+function updateContributersList(dct) {
+    var contributersList = document.getElementById('username');
+    contributersList.options.length = 0;
+    console.log(dct['contributers']);
+
+    for (i in dct['contributers']) {
+        var contributer = dct['contributers'][i];
+        var opt = document.createElement('option');
+        opt.value = contributer['username'];
+        opt.innerHTML = contributer['fullName'] + " (" + contributer['username'] +")";
+        contributersList.appendChild(opt);
+    }
 }
 </script>
 
