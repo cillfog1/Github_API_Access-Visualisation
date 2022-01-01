@@ -63,7 +63,11 @@ def collectData(repoName) :
 
 	#----------------------------- Repos -----------------------------
 	#Get repo
-	repo = g.get_repo(repoName)
+	repo = "" #default value
+	try :
+		repo = g.get_repo(repoName)
+	except :
+		return {'error' : "Repo doesn't exist"}
 
 	#default value
 	contributers = []
