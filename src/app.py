@@ -10,8 +10,7 @@ cors = CORS(app)
 @app.route('/analyse', methods=['GET','POST'])
 def anaylseData() :
 	repoName = request.args.get('repoName')
-	gatherData.collectData(repoName)
-	return "success"
+	return gatherData.collectData(repoName)
 
 @app.route('/extract', methods=['GET','POST'])
 def extractData() :
