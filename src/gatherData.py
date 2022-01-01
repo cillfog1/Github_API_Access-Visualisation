@@ -76,13 +76,17 @@ def collectData(repoName) :
 		#Get contributers
 		contributersList = g.get_repo(repoName).get_contributors()
 		for contributer in contributersList :
-			#Anonymise names?
-			if (constants.ANONYMISE_NAMES == 1) :
-				username = names[contributer.login].replace(" ", ""), #Anonymising username
-				fullName = names[contributer.name]
-			else :
+			try :
 				username = contributer.login
 				fullName = contributer.name
+
+				#Anonymise names?
+				if (constants.ANONYMISE_NAMES == 1) :
+					username = names[username].replace(" ", "") #Anonymising username
+					fullName = names[fullName]
+			except :
+				username = "InvalidUsername"
+				fullName = "Invalid Name"
 
 			contributerDct = {	'username' : username,
 								'fullName' : fullName}
@@ -125,14 +129,17 @@ def collectData(repoName) :
 		commitsByDate = []
 
 		for commit in commits :
-			#Anonymise names?
-			if (constants.ANONYMISE_NAMES == 1) :
-				username = names[commit.author.login].replace(" ", ""), #Anonymising username
-			else :
-				username = commit.author.login
+			try :
+				username = commit.committer.login
+
+				#Anonymise names?
+				if (constants.ANONYMISE_NAMES == 1) :
+					username = names[username].replace(" ", "") #Anonymising username
+			except :
+				username = "InvalidUsername"
 
 			#Date of commit
-			date = commit.commit.author.date.strftime("%Y/%m/%d")
+			date = commit.commit.committer.date.strftime("%Y/%m/%d")
 
 			#If previous commit was made on the same day, by the same person merge them
 			if (username == previousCommitDct['username'] and date == previousCommitDct['date']) :
