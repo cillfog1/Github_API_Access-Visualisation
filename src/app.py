@@ -1,9 +1,11 @@
 from flask import Flask, request
+from flask_cors import CORS
 
 import gatherData
 import processData
 
 app = Flask(__name__)
+cors = CORS(app)
 
 @app.route('/analyse', methods=['GET','POST'])
 def anaylseData() :
