@@ -4,16 +4,18 @@
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
 <body onload="drawGraph()">
-  <div>
-    <input type="text" id="repoName">
-    <button onclick="analyseRepo()">Analyse</button>
-  </div>
+    <h1 id="selectedRepo">Insert a Repo link</h1>
+    <h2 id="errorMsg"></h2>
+    <div>
+        <input type="text" id="repoName" style="width : 80%">
+        <button onclick="analyseRepo()">Analyse</button>
+        </div>
 
-  <div>
-    <select id="username" onchange="extractRepo()">
-        <option>Placeholder</option>
-    </select>
-  </div>
+        <div>
+        <select id="username" onchange="extractRepo()" style="width : 80%">
+            <option>Choose a contributer</option>
+        </select>
+    </div>
 </body>
 
 <script>
@@ -26,8 +28,15 @@ function analyseRepo() {
     .then(function (response) {
         return response.json();
     }).then(function (dct) {
-        updateContributersList(dct);
-        extractRepo(); 
+        if (dct['error']) {
+            updateErrorMsg(dct['error']);
+        }
+        else {
+            updateErrorMsg("");
+            updateSelectedRepo(repoName);
+            updateContributersList(dct);
+            extractRepo(); 
+        }
     });
 }
 
@@ -38,8 +47,7 @@ function extractRepo() {
     {method: 'POST'})
     .then(function (response) {
         return response.text();
-    }).then(function (text) {
-        console.log(text);
+    }).then(function (repoName) {
         drawGraph(); 
     });
 }
@@ -56,6 +64,14 @@ function updateContributersList(dct) {
         opt.innerHTML = contributer['fullName'] + " (" + contributer['username'] +")";
         contributersList.appendChild(opt);
     }
+}
+
+function updateSelectedRepo(repoName) {
+    document.getElementById('selectedRepo').innerHTML = repoName;
+}
+
+function updateErrorMsg(errorMsg) {
+    document.getElementById('errorMsg').innerHTML = errorMsg;
 }
 </script>
 
