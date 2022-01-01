@@ -170,7 +170,23 @@ def collectData(repoName) :
 			commitsDB.insert_many([commitDct])
 			#Trace 6: Data inserted into database
 			print("Trace 6: Data inserted into database\n")
+		return repoDct
 
 	else :
 		#Trace 7: Repo already exists in database
 		print("Trace 7: " + repoName + " already exists in database\n")
+
+		repoData = reposDB.find({"repoName": repoName})
+		contributers = [] #default value
+		for data in repoData :
+			print("Contributers to repo : " + repoName)
+			for user in data['contributers'] :
+				contributerDct = {	'username' : user['username'],
+									'fullName' : user['fullName']}
+				contributers.append(contributerDct)
+				pprint.pprint(contributerDct)
+				print()
+				
+		repoDct = {	'repoName' : repoName,
+			'contributers' : contributers}
+		return repoDct
