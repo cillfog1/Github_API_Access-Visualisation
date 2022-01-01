@@ -65,10 +65,11 @@ def collectData(repoName) :
 	#Get repo
 	repo = g.get_repo(repoName)
 
+	#default value
+	contributers = []
 	#If repo does not already exist in database
 	if (reposDB.count_documents({"repoName": repoName}) < 1) :
 		#Get contributers
-		contributers = [] #default value
 		contributersList = g.get_repo(repoName).get_contributors()
 		for contributer in contributersList :
 			#Anonymise names?
@@ -81,6 +82,12 @@ def collectData(repoName) :
 
 			contributerDct = {	'username' : username,
 								'fullName' : fullName}
+
+			#Clean dictionary
+			for k, v in dict(contributerDct).items() :
+				if v is None :
+					del contributerDct[k]
+
 			contributers.append(contributerDct)
 
 		repoDct = {	'repoName' : repoName,
@@ -170,14 +177,12 @@ def collectData(repoName) :
 			commitsDB.insert_many([commitDct])
 			#Trace 6: Data inserted into database
 			print("Trace 6: Data inserted into database\n")
-		return repoDct
 
 	else :
 		#Trace 7: Repo already exists in database
 		print("Trace 7: " + repoName + " already exists in database\n")
 
 		repoData = reposDB.find({"repoName": repoName})
-		contributers = [] #default value
 		for data in repoData :
 			print("Contributers to repo : " + repoName)
 			for user in data['contributers'] :
@@ -186,7 +191,11 @@ def collectData(repoName) :
 				contributers.append(contributerDct)
 				pprint.pprint(contributerDct)
 				print()
-				
-		repoDct = {	'repoName' : repoName,
-			'contributers' : contributers}
-		return repoDct
+
+	repoDct = {	'repoName' : repoName,
+		'contributers' : contributers}
+
+	print("Contributers : ")
+	pprint.pprint(repoDct)
+	print()
+	return repoDct
