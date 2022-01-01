@@ -80,6 +80,10 @@ def collectData(repoName) :
 				username = contributer.login
 				fullName = contributer.name
 
+				#Ensure fullname has a value to prevent "undefined" being printed to the web browser
+				if (fullName is None) :
+					fullName = "Invalid Name"
+
 				#Anonymise names?
 				if (constants.ANONYMISE_NAMES == 1) :
 					username = names[username].replace(" ", "") #Anonymising username
