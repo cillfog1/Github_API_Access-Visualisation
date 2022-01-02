@@ -190,7 +190,7 @@ function drawGraph() {
             if (moreThanOneContributer) {
                 var maxHeightContributer = d3.max(data, function(d) { return +d.Total; });
                 var maxHeightTeam = d3.max(data2, function(d) { return +d.AverageTotal; });
-                maxHeight = (maxHeightContributer >= maxHeightTeam) ? maxHeightontributer : maxHeightTeam;
+                maxHeight = (maxHeightContributer >= maxHeightTeam) ? maxHeightContributer : maxHeightTeam;
             }
             else {
                 maxHeight = d3.max(data, function(d) { return +d.Total; });
