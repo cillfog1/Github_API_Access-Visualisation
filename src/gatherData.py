@@ -136,6 +136,10 @@ def collectData(repoName) :
 			try :
 				username = commit.committer.login
 
+				#If commited by a webcommit, get author username (ie. actual committer) rather than the github webCommit username
+				if (username == "web-flow") :
+					username = commit.author.login
+
 				#Anonymise names?
 				if (constants.ANONYMISE_NAMES == 1) :
 					username = names[username].replace(" ", "") #Anonymising username
