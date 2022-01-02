@@ -17,9 +17,7 @@
         </select>
     </div>
 
-    <div>
-        <button onclick="showJustUserData()">Show just user data</button>
-        <button onclick="showUserAndTeamData()">Show user and team data</button>
+    <div id="dataSelectionButtons">
     </div>
 </body>
 
@@ -65,9 +63,11 @@ function updateContributersList(dct) {
     console.log(dct['contributers']);
     if (dct['contributers'].length > 1) {
         moreThanOneContributer = true;
+        showDataSelectionButtons(true);
     }
     else {
         moreThanOneContributer = false;
+        showDataSelectionButtons(false);
     }
     for (i in dct['contributers']) {
         var contributer = dct['contributers'][i];
@@ -95,6 +95,15 @@ function showJustUserData() {
 function showUserAndTeamData() {
     showBothDatasets = true;
     drawGraph(); 
+}
+
+function showDataSelectionButtons(show) {
+    var output = ""
+    if (show) {
+        output =    '<button onclick="showJustUserData()">Show just user data</button>' +
+                    '<button onclick="showUserAndTeamData()">Show user and team data</button>';
+    }
+    document.getElementById('dataSelectionButtons').innerHTML = output;
 }
 </script>
 
