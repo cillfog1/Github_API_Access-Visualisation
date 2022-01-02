@@ -16,11 +16,17 @@
             <option>Choose a contributer</option>
         </select>
     </div>
+
+    <div>
+        <button onclick="showJustUserData()">Show just user data</button>
+        <button onclick="showUserAndTeamData()">Show user and team data</button>
+    </div>
 </body>
 
 <script>
 var currentRepo
 var moreThanOneContributer
+var showBothDatasets = true
 
 //Analyse repo on server side and add relevant data to database if not already present
 function analyseRepo() {
@@ -80,6 +86,16 @@ function updateSelectedRepo(repoName) {
 function updateErrorMsg(errorMsg) {
     document.getElementById('errorMsg').innerHTML = errorMsg;
 }
+
+function showJustUserData() {
+    showBothDatasets = false;
+    drawGraph(); 
+}
+
+function showUserAndTeamData() {
+    showBothDatasets = true;
+    drawGraph(); 
+}
 </script>
 
 <h1>Comparison Data</h1>
@@ -126,7 +142,7 @@ function drawGraph() {
 
             // List of groups (here I have one group per column)
             var allGroup = []
-            if (moreThanOneContributer) {
+            if (moreThanOneContributer && showBothDatasets) {
                 allGroup = ["Additions", "Deletions", "Total", "AverageAdditions", "AverageDeletions", "AverageTotal"]
             }
             else {
@@ -163,7 +179,7 @@ function drawGraph() {
             // Calculate date range
             var dateMin
             var dateMax
-            if (moreThanOneContributer) {
+            if (moreThanOneContributer && showBothDatasets) {
                 var dateMinContributer = d3.min(data, function(d) { return d.Date; });
                 var dateMinTeam = d3.min(data2, function(d) { return d.Date; });
                 dateMin = (dateMinContributer <= dateMinTeam) ? dateMinContributer : dateMinTeam;
@@ -187,7 +203,7 @@ function drawGraph() {
 
             // Calculate max height
             var maxHeight
-            if (moreThanOneContributer) {
+            if (moreThanOneContributer && showBothDatasets) {
                 var maxHeightContributer = d3.max(data, function(d) { return +d.Total; });
                 var maxHeightTeam = d3.max(data2, function(d) { return +d.AverageTotal; });
                 maxHeight = (maxHeightContributer >= maxHeightTeam) ? maxHeightContributer : maxHeightTeam;
