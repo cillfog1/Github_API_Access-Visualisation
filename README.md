@@ -23,7 +23,7 @@
     </li>
     <li><a href="#instructions"><b>Instructions</b></a></li>
     <li><a href="#what-is-being-analysed"><b>What Is Being Analysed?</b></a></li>
-    <li><a href="#how-is-it-being-analysed-/-calculated"><b>How Is It Being Analysed / Calculated?</b></a></li>
+    <li><a href="#how-is-it-being-analysed--calculated"><b>How Is It Being Analysed / Calculated?</b></a></li>
     <li>
       <a href="#additonal-information"><b>Additonal Information</b></a>
       <ul>
