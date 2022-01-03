@@ -42,6 +42,9 @@ def extractData(repoName, username) :
 	print("Database : ")
 	#Pretty Print data
 
+	totalContributerAdditions = 0
+	totalContributerDeletions = 0
+	totalContributerTotal = 0
 	with open('csv/contributerData.csv', 'w') as file :
 		file.write('Date,Additions,Deletions,Total\n')
 		for data in githubData :
@@ -51,6 +54,9 @@ def extractData(repoName, username) :
 						str(data['additions']) + ',' +
 						str(data['deletions']) + ',' +
 						str(data['total']) + '\n')
+			totalContributerAdditions += data['additions']
+			totalContributerDeletions += data['deletions']
+			totalContributerTotal += data['total']
 
 	#Average of other members of the team
 	#Extract the database data
@@ -63,6 +69,9 @@ def extractData(repoName, username) :
 			print()
 			numOfContributers += 1
 
+	totalTeamAdditions = totalContributerAdditions
+	totalTeamDeletions = totalContributerDeletions
+	totalTeamTotal = totalContributerTotal
 	if (numOfContributers > 1) :
 		githubData = commitsDB.find({"repoName": repoName, "username": { "$ne" : username}})
 
@@ -88,6 +97,10 @@ def extractData(repoName, username) :
 							str(totalDeletions / numOfContributersToday) + ',' +
 							str(totalTotal / numOfContributersToday) + '\n')
 
+					totalTeamAdditions += totalAdditions
+					totalTeamDeletions += totalDeletions
+					totalTeamTotal += totalTotal
+
 					totalAdditions = 0
 					totalDeletions = 0
 					totalTotal = 0
@@ -108,8 +121,24 @@ def extractData(repoName, username) :
 						str(totalDeletions / numOfContributersToday) + ',' +
 						str(totalTotal / numOfContributersToday) + '\n')
 
+			totalTeamAdditions += totalAdditions
+			totalTeamDeletions += totalDeletions
+			totalTeamTotal += totalTotal
+
 	else :
 		with open('csv/teamAverageData.csv', 'w') as file :
 			file.write('Date,Additions,Deletions,Total\n')
 			#Empty file
 			file.write(	"0000/00/00,0,0,0\n")
+
+	statsDct = {	'totalContributerAdditions' : totalContributerAdditions,
+					'totalContributerDeletions' : totalContributerDeletions,
+					'totalContributerTotal' : totalContributerTotal,
+					'totalAverageTeamMemberAdditions' : (totalTeamAdditions / numOfContributers),
+					'totalAverageTeamMemberDeletions' : (totalTeamDeletions / numOfContributers),
+					'totalAverageTeamMemberTotal' : (totalTeamTotal / numOfContributers),
+					'totalTeamAdditions' : totalTeamAdditions,
+					'totalTeamDeletions' : totalTeamDeletions,
+					'totalTeamTotal' : totalTeamTotal}
+
+	return statsDct

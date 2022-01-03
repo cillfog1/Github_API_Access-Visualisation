@@ -16,8 +16,7 @@ def anaylseData() :
 def extractData() :
 	repoName = request.args.get('repoName')
 	username = request.args.get('username')
-	processData.extractData(repoName, username)
-	return "success"
+	return processData.extractData(repoName, username)
 
 if __name__ == '__main__' :
     app.run(host='0.0.0.0', port=5000)
