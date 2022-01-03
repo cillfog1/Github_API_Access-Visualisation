@@ -19,8 +19,44 @@
 
     <div id="dataSelectionButtons">
     </div>
+
+    <h1>Comparison Data</h1>
+    <!-- Create a div where the graph will take place -->
+    <div id="graph1"></div>
+
+    <!-- Circle are black when hovered-->
+    <style>
+    .myCircle:hover {
+        stroke: black;
+    }
+    </style>
+
+    <div>
+        <div>
+            <h2>Contributer</h2>
+            Total Additions : <a id="totalContributerAdditions"></a><br>
+            Total Deletions : <a id="totalContributerDeletions"></a><br>
+            Grand Total : <a id="totalContributerTotal"></a>
+        </div>
+
+        <div>
+            <h2>Average Team Member</h2>
+            Total Additions : <a id="totalAverageTeamMemberAdditions"></a><br>
+            Total Deletions : <a id="totalAverageTeamMemberDeletions"></a><br>
+            Grand Total : <a id="totalAverageTeamMemberTotal"></a>
+        </div>
+
+        <div>
+            <h2>Team Total</h2>
+            Total Additions : <a id="totalTeamAdditions"></a><br>
+            Total Deletions : <a id="totalTeamDeletions"></a><br>
+            Grand Total : <a id="totalTeamTotal"></a>
+        </div>
+    </div>
 </body>
 
+
+<!------ Scripts ------->
 <script>
 var currentRepo
 var moreThanOneContributer
@@ -48,27 +84,59 @@ function analyseRepo() {
 }
 
 function extractRepo() {
+    displayLoadingMsg();
     var username = document.getElementById('username').value;
     fetch(`http://localhost:5000/extract?repoName=${currentRepo}&username=${username}`,
         {method: 'POST'})
         .then(function (response) {
-            return response.text();
-        }).then(function (repoName) {
+            return response.json();
+        }).then(function (statsDct) {
+            updateStats(statsDct);
             drawGraph(); 
         });
+}
+
+function updateStats(statsDct) {
+    //Contributer
+    document.getElementById('totalContributerAdditions').innerHTML = statsDct['totalContributerAdditions'];
+    document.getElementById('totalContributerDeletions').innerHTML = statsDct['totalContributerDeletions'];
+    document.getElementById('totalContributerTotal').innerHTML = statsDct['totalContributerTotal'];
+
+    //Team Average
+    document.getElementById('totalAverageTeamMemberAdditions').innerHTML = statsDct['totalAverageTeamMemberAdditions'];
+    document.getElementById('totalAverageTeamMemberDeletions').innerHTML = statsDct['totalAverageTeamMemberDeletions'];
+    document.getElementById('totalAverageTeamMemberTotal').innerHTML = statsDct['totalAverageTeamMemberTotal'];
+
+    //Team Total
+    document.getElementById('totalTeamAdditions').innerHTML = statsDct['totalTeamAdditions'];
+    document.getElementById('totalTeamDeletions').innerHTML = statsDct['totalTeamDeletions'];
+    document.getElementById('totalTeamTotal').innerHTML = statsDct['totalTeamTotal'];
 }
 
 function displayStartingMsg() {
     document.getElementById('graph1').innerHTML = "Please Choose a repository to analyse";
 }
+
+var loadingMsg = "Loading...";
+var statsLoadingDct = { 'totalContributerAdditions' : loadingMsg,
+                    'totalContributerDeletions' : loadingMsg,
+                    'totalContributerTotal' : loadingMsg,
+                    'totalAverageTeamMemberAdditions' : loadingMsg,
+                    'totalAverageTeamMemberDeletions' : loadingMsg,
+                    'totalAverageTeamMemberTotal' : loadingMsg,
+                    'totalTeamAdditions' : loadingMsg,
+                    'totalTeamDeletions' : loadingMsg,
+                    'totalTeamTotal' : loadingMsg}
+
 function displayLoadingMsg() {
-    document.getElementById('graph1').innerHTML = "Loading....";
+    document.getElementById('graph1').innerHTML = loadingMsg;
+    updateStats(statsLoadingDct);
 }
 
 function updateContributersList(dct) {
     var contributersList = document.getElementById('username');
     contributersList.options.length = 0;
-    console.log(dct['contributers']);
+    //console.log(dct['contributers']);
     if (dct['contributers'].length > 1) {
         moreThanOneContributer = true;
         showDataSelectionButtons(true);
@@ -114,17 +182,6 @@ function showDataSelectionButtons(show) {
     document.getElementById('dataSelectionButtons').innerHTML = output;
 }
 </script>
-
-<h1>Comparison Data</h1>
-<!-- Create a div where the graph will take place -->
-<div id="graph1"></div>
-
-<!-- Circle are black when hovered-->
-<style>
-.myCircle:hover {
-    stroke: black;
-}
-</style>
 
 <!-- Color Scale -->
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -186,7 +243,7 @@ function drawGraph() {
                 }
             });
             // I strongly advise to have a look to dataReady with
-            console.log(dataReady)
+            //console.log(dataReady)
 
                 // A color scale: one color for each group
             var myColor = d3.scaleOrdinal()
