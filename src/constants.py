@@ -1,5 +1,5 @@
 #Github token
-GITHUB_TOKEN = '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'
+GITHUB_TOKEN = 0 #Insert your Github token here
 
 #MongoDB address
 CONN = 'mongodb://localhost:27017'
