@@ -25,6 +25,12 @@
     <li><a href="#what-is-being-analysed"><b>What Is Being Analysed?</b></a></li>
     <li><a href="#how-is-it-being-analysed--calculated"><b>How Is It Being Analysed / Calculated?</b></a></li>
     <li>
+      <a href="#images-of-the-webpage-in-action"><b>Images Of The Webpage In Action</b></a>
+      <ul>
+	      <li><a href="#running-tests">Running Tests</a></li>
+      </ul>
+    </li>
+	<li>
       <a href="#additonal-information"><b>Additonal Information</b></a>
       <ul>
 	      <li><a href="#running-tests">Running Tests</a></li>
@@ -115,6 +121,27 @@ When a contributor is selected, their commits are first organised by day, meanin
 
 The team average is determined by combining all commits made on the same day by any contributor other than the selected one. The sum of the total number of lines added, lines deleted and total number of lines changed on a particular day is then divided by the number of contributors who committed on the day to determine the average per person.
 
+
+<br/>
+
+
+<!-- Images Of The Webpage In Action -->
+## Images Of The Webpage In Action
+![Loading Screen](https://github.com/cillfog1/Github_API_Access-Visualisation/blob/main/images/Loading%20Screen.PNG)
+Loading Screen
+
+![Anonymised user data being plotted against the team average](https://github.com/cillfog1/Github_API_Access-Visualisation/blob/main/images/Anonymised%20user%20data%20being%20plotted%20against%20the%20team%20average.PNG)
+Anonymised user data being plotted against the team average
+
+![Anonymised user data being plotted on it's own](https://github.com/cillfog1/Github_API_Access-Visualisation/blob/main/images/Anonymised%20user%20data%20being%20plotted%20on%20it's%20own.PNG)
+Anonymised user data being plotted on it's own
+
+![Example of deletions graph being toggled off](https://github.com/cillfog1/Github_API_Access-Visualisation/blob/main/images/Example%20of%20deletions%20graph%20being%20toggled%20off.PNG)
+Example of deletions graph being toggled off
+
+![Example of a repo that does not exist](https://github.com/cillfog1/Github_API_Access-Visualisation/blob/main/images/Example%20of%20a%20repo%20that%20does%20not%20exist.PNG)
+Example of a repo that does not exist
+ 
 
 <br/>
 
