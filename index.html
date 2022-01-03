@@ -3,7 +3,7 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
-<body onload="displayStartingMsg()">
+<body onload="displayMsgOnGraph('Please enter a repository to analyse')">
     <div class="header">
         Metric Visualisation
         <hr/>
@@ -29,8 +29,6 @@
 
         <div id="dataSelectionButtons"></div>
     </div>
-    <h2 id="errorMsg"></h2>
-
 
     <!-- Div where graph will be -->
     <div id="graph1"></div>
@@ -161,6 +159,7 @@ hr {
 }
 
 .footer {
+    margin-top: 6px;
     overflow: hidden;
     min-height: 100%;
 }
@@ -201,10 +200,9 @@ function analyseRepo() {
             return response.json();
         }).then(function (dct) {
             if (dct['error']) {
-                updateErrorMsg(dct['error']);
+                displayMsgOnGraph(dct['error']);
             }
             else {
-                updateErrorMsg("");
                 updateSelectedRepo(repoName);
                 updateContributersList(dct);
                 extractRepo(); 
@@ -243,9 +241,11 @@ function updateStats(statsDct) {
 }
 
 var tooltipHeight = 45;
-function displayStartingMsg() {
-    document.getElementById('graph1').setAttribute("style", "height: " + (height + margin.top + margin.bottom + tooltipHeight) + "px;");
-    document.getElementById('graph1').innerHTML = "Please Choose a repository to analyse";
+var fontSizeForGraphMsg = 30;
+function displayMsgOnGraph(message) {
+    var totalHeight = height + margin.top + margin.bottom + tooltipHeight;
+    document.getElementById('graph1').setAttribute("style", "height: " + totalHeight + "px; text-align: center; line-height: " + (totalHeight - fontSizeForGraphMsg) + "px; font-size: " + fontSizeForGraphMsg + "px;");
+    document.getElementById('graph1').innerHTML = message;
 }
 
 var loadingMsg = "Loading...";
@@ -260,7 +260,7 @@ var statsLoadingDct = { 'totalContributerAdditions' : loadingMsg,
                     'totalTeamTotal' : loadingMsg}
 
 function displayLoadingMsg() {
-    document.getElementById('graph1').innerHTML = loadingMsg;
+    displayMsgOnGraph(loadingMsg);
     updateStats(statsLoadingDct);
 }
 
@@ -320,13 +320,14 @@ function showDataSelectionButtons(show) {
 
 <script>
 // set the dimensions and margins of the graph
-var margin = {top: 60, right: 70, bottom: 50, left: 70},
+var margin = {top: 35, right: 70, bottom: 50, left: 70},
     width = window.innerWidth - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 //Graph the data
 function drawGraph() {
     document.getElementById('graph1').innerHTML = "";
+    document.getElementById('graph1').setAttribute("style", "font-size: 16px");
 
     // append the svg object to the body of the page
     var svg = d3.select("#graph1")
@@ -543,6 +544,22 @@ function drawGraph() {
                     // Change the opacity: from 0 to 1 or from 1 to 0
                     d3.selectAll("." + d.name).transition().style("opacity", currentOpacity == 1 ? 0:1)
                 })
+
+            //Instructions
+            svg.selectAll("mylabels")
+                .data(dataReady)
+                .enter()
+                .append('g')
+                .append("text")
+                    .attr("x", xStart)
+                    .attr("y", 0)
+                    .style("fill", "black")
+                    .text("Click to toggle on/off")
+                    .attr("text-anchor", "left")
+                    .attr("font-weight", "bold")
+                    .attr("font-size", "18px")
+                    .attr("text-decoration", "underline")
+                    .style("alignment-baseline", "middle")
         })
     })
 }
