@@ -69,36 +69,47 @@ def extractData(repoName, username) :
 		print("Database : ")
 		#Pretty Print data
 
-		with open('csv/teamData.csv', 'w') as file :
+		with open('csv/teamAverageData.csv', 'w') as file :
 			file.write('Date,Additions,Deletions,Total\n')
 
 			previousDate = 0
 			totalAdditions = 0
 			totalDeletions = 0
 			totalTotal = 0
+			contributersToday = []
+			numOfContributersToday = 0
 			for data in githubData :
 				pprint.pprint(data)
 				print()
 
 				if (previousDate != data['date'] and previousDate != 0) :
 					file.write(	str(previousDate) + ',' +
-							str(totalAdditions / (numOfContributers - 1)) + ',' +
-							str(totalDeletions / (numOfContributers - 1)) + ',' +
-							str(totalTotal / (numOfContributers - 1)) + '\n')
+							str(totalAdditions / numOfContributersToday) + ',' +
+							str(totalDeletions / numOfContributersToday) + ',' +
+							str(totalTotal / numOfContributersToday) + '\n')
+
 					totalAdditions = 0
 					totalDeletions = 0
 					totalTotal = 0
+					contributersToday = []
+					numOfContributersToday = 0
+
+				if (data['username'] not in contributersToday) :
+					contributersToday.append(data['username'])
+					numOfContributersToday += 1
 
 				previousDate = data['date']
 				totalAdditions += data['additions']
 				totalDeletions += data['deletions']
 				totalTotal += data['total']
+
 			file.write(	str(previousDate) + ',' +
-						str(totalAdditions / (numOfContributers - 1)) + ',' +
-						str(totalDeletions / (numOfContributers - 1)) + ',' +
-						str(totalTotal / (numOfContributers - 1)) + '\n')
+						str(totalAdditions / numOfContributersToday) + ',' +
+						str(totalDeletions / numOfContributersToday) + ',' +
+						str(totalTotal / numOfContributersToday) + '\n')
+
 	else :
-		with open('csv/teamData.csv', 'w') as file :
+		with open('csv/teamAverageData.csv', 'w') as file :
 			file.write('Date,Additions,Deletions,Total\n')
 			#Empty file
 			file.write(	"0000/00/00,0,0,0\n")
