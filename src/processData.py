@@ -134,9 +134,9 @@ def extractData(repoName, username) :
 	statsDct = {	'totalContributerAdditions' : totalContributerAdditions,
 					'totalContributerDeletions' : totalContributerDeletions,
 					'totalContributerTotal' : totalContributerTotal,
-					'totalAverageTeamMemberAdditions' : (totalTeamAdditions / numOfContributers),
-					'totalAverageTeamMemberDeletions' : (totalTeamDeletions / numOfContributers),
-					'totalAverageTeamMemberTotal' : (totalTeamTotal / numOfContributers),
+					'totalAverageTeamMemberAdditions' : round((totalTeamAdditions / numOfContributers), 2),
+					'totalAverageTeamMemberDeletions' : round((totalTeamDeletions / numOfContributers), 2),
+					'totalAverageTeamMemberTotal' : round((totalTeamTotal / numOfContributers), 2),
 					'totalTeamAdditions' : totalTeamAdditions,
 					'totalTeamDeletions' : totalTeamDeletions,
 					'totalTeamTotal' : totalTeamTotal}
