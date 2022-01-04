@@ -38,6 +38,7 @@
 	      <li><a href="#anonymised-user-data-being-plotted-on-its-own">Anonymised user data being plotted on it's own</a></li>
 	      <li><a href="#example-of-deletions-graph-being-toggled-off">Example of deletions graph being toggled off</a></li>
 	      <li><a href="#example-of-a-repo-that-does-not-exist">Example of a repo that does not exist</a></li>
+	      <li><a href="#graph-of-large-1000-commit-repository">Graph of large 1,000+ commit repository</a></li>
       </ul>
     </li>
     <li><a href="#contributers"><b>Contributers</b></a></li>
@@ -147,6 +148,10 @@ The team average is determined by combining all commits made on the same day by 
 ### Example of a repo that does not exist
 ![Example of a repo that does not exist](https://github.com/cillfog1/Github_API_Access-Visualisation/blob/main/images/Example%20of%20a%20repo%20that%20does%20not%20exist.PNG)
  
+
+### Graph of large 1,000+ commit repository
+![Example of the graphing on large repositories with 1,000+ commits](https://github.com/cillfog1/Github_API_Access-Visualisation/blob/main/images/Example%20of%20the%20graphing%20on%20large%20repositories%20with%201%2C000%2B%20commits.PNG)
+
 
 <br/>
 
