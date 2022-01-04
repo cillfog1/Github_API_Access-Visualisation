@@ -24,14 +24,8 @@
     <li><a href="#instructions"><b>Instructions</b></a></li>
     <li><a href="#what-is-being-analysed"><b>What Is Being Analysed?</b></a></li>
     <li><a href="#how-is-it-being-analysed--calculated"><b>How Is It Being Analysed / Calculated?</b></a></li>
-    <li>
-      <a href="#images-of-the-webpage-in-action"><b>Images Of The Webpage In Action</b></a>
-      <ul>
-	      <li><a href="#running-tests">Running Tests</a></li>
-      </ul>
-    </li>
 	<li>
-      <a href="#additonal-information"><b>Additonal Information</b></a>
+      <a href="#images-of-the-webpage-in-action"><b>Images Of The Webpage In Action</b></a>
       <ul>
 	      <li><a href="#loading-screen">Loading Screen</a></li>
 	      <li><a href="#anonymised-user-data-being-plotted-against-the-team-average">Anonymised user data being plotted against the team average</a></li>
@@ -40,6 +34,12 @@
 	      <li><a href="#example-of-a-repo-that-does-not-exist">Example of a repo that does not exist</a></li>
 	      <li><a href="#graph-of-large-1000-commit-repository">Graph of large 1,000+ commit repository</a></li>
       </ul>
+    </li>
+	<li>
+		<a href="#additonal-information"><b>Additonal Information</b></a>
+		<ul>
+			<li><a href="#running-tests">Running Tests</a></li>
+		</ul>
     </li>
     <li><a href="#contributers"><b>Contributers</b></a></li>
   </ol>
